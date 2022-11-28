@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transcribe import trans
+from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi.openapi.utils import get_openapi
 from fastapi.openapi.docs import (
     get_redoc_html,
@@ -58,6 +60,17 @@ def custom_openapi():
 
 
 app.openapi = custom_openapi
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class Address(BaseModel):
     resource_link: str
